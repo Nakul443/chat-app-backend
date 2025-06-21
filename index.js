@@ -1,3 +1,5 @@
+// MAIN ENTRY POINT FILE
+
 const Message = require('./models/Message');
 require('dotenv').config();
 const express = require('express');
@@ -26,6 +28,7 @@ app.get('/', (req, res) => {
   res.send('Chat App Backend is running with WebSocket!');
 });
 
+// connectDB();
 
 // Authentication - check if the token sent by the user is correct or not
 
@@ -90,6 +93,25 @@ io.on('connection', (socket) => {
 });
 
 
+
+
+
+
+// temporary test if tokens are being generated or not
+app.post('/generate-token', (req,res) => {
+  // authenticate user
+
+  const { userId } = req.body;
+
+  const accessToken = jwt.sign({id : userId}, process.env.JWT_SECRET);
+  res.json({ accessToken : accessToken}); // res.json({accessToken}) will also work
+});
+
+
+
+
+
+
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
@@ -103,3 +125,34 @@ connectDB();
 // imports routes file
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
+
+
+
+
+
+
+// to check if the db is correctly storing messages or not
+Message = require('./models/Message');
+
+app.post('/send-message', async (req,res) => {
+  try {
+    const {text, userId} = req.body;
+
+    const newMessage = new Message({
+      sender : userId,
+      text : text
+    });
+
+  await newMessage.save();
+
+  res.status(200).json({
+    success: true,
+    error: newMessage
+  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error'});
+  }
+});

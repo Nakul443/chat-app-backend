@@ -1,3 +1,6 @@
+// DB connection logic file
+
+
 // to connect mongoDB
 
 const mongoose = require('mongoose');
@@ -16,8 +19,9 @@ require('dotenv').config();
 // async - asynchronous operations, allows to use await
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected');
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log('MongoDB Connected: ${conn.connection.host}');
+
     // if an error occurs in try, the code directly jumps to catch
   } catch (err) {
     console.error('DB connection error:', err.message);

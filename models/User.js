@@ -1,3 +1,6 @@
+// user schema file
+
+
 const mongoose = require('mongoose');
 // require() used to import function from other files
 

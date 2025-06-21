@@ -1,3 +1,5 @@
+// authentication logic
+
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -10,6 +12,7 @@ exports.register = async (req, res) => {
     // other files can use require() to use the register function
   try {
     const { username, password } = req.body;
+    // req.body contains data sent from the client
     
     // Check if user exists
     const existingUser = await User.findOne({ username });

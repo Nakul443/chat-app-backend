@@ -1,3 +1,5 @@
+// message schema file
+
 const mongoose = require('mongoose');
 // const variable named mongoose
 // require() used to import modules, loads the mongoose npm package
